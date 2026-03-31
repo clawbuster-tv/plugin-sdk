@@ -1,6 +1,6 @@
 import { Permission, type PluginManifest } from '../types.js';
 
-export const PLUGIN_MANIFEST_FILENAME = 'clawbuster-plugin.json';
+export const PLUGIN_MANIFEST_FILENAME = 'omnilux-plugin.json';
 
 export type ManifestValidationErrorCode =
   | 'invalid-type'
@@ -71,12 +71,12 @@ export function validatePluginManifest(input: unknown): ManifestValidationResult
       message: 'Plugin manifest must declare a compatibility block.',
       value: manifest.compatibility,
     });
-  } else if (typeof manifest.compatibility.clawbuster !== 'string' || manifest.compatibility.clawbuster.trim().length === 0) {
+  } else if (typeof manifest.compatibility.omnilux !== 'string' || manifest.compatibility.omnilux.trim().length === 0) {
     errors.push({
       code: 'missing-field',
-      path: 'compatibility.clawbuster',
-      message: 'Plugin compatibility must declare a Clawbuster version range.',
-      value: manifest.compatibility.clawbuster,
+      path: 'compatibility.omnilux',
+      message: 'Plugin compatibility must declare a OmniLux version range.',
+      value: manifest.compatibility.omnilux,
     });
   }
 

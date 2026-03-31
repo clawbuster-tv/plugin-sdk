@@ -1,11 +1,11 @@
-# @clawbuster/plugin-sdk
+# @omnilux/plugin-sdk
 
-TypeScript SDK for building Clawbuster plugins. Provides the interfaces, types, and runtime context needed to extend the platform with custom adapters, routes, jobs, and settings panels.
+TypeScript SDK for building OmniLux plugins. Provides the interfaces, types, and runtime context needed to extend the platform with custom adapters, routes, jobs, and settings panels.
 
 ## Installation
 
 ```bash
-pnpm add @clawbuster/plugin-sdk
+pnpm add @omnilux/plugin-sdk
 ```
 
 ## Plugin Lifecycle
@@ -20,7 +20,7 @@ Every plugin exports a `register` function that receives a `PluginContext`. Use 
 ## Minimal Example
 
 ```typescript
-import type { PluginContext } from '@clawbuster/plugin-sdk';
+import type { PluginContext } from '@omnilux/plugin-sdk';
 
 export function register(context: PluginContext): void {
   context.registerRoutes({
@@ -55,7 +55,7 @@ The SDK ships type definitions for all adapter interfaces: `DownloadClientAdapte
 
 ## Documentation
 
-See the [Clawbuster docs](https://github.com/clawbuster-tv/docs) for the full plugin development guide.
+See the [OmniLux docs](https://github.com/omnilux-tv/docs) for the full plugin development guide.
 
 ## License
 

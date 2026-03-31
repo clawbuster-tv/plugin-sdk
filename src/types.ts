@@ -45,7 +45,7 @@ export type PluginCategory =
   | string;
 
 export interface PluginCompatibility {
-  clawbuster: string;
+  omnilux: string;
   api?: string;
   metadata?: Record<string, unknown>;
 }
