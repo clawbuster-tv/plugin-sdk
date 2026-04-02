@@ -13,6 +13,42 @@ export enum Permission {
   UiDashboardWidget = 'ui:dashboard-widget',
   SchedulerRegister = 'scheduler:register',
   NotificationsSend = 'notifications:send',
+  RequestsReadWrite = 'requests:read-write',
+  LibraryRead = 'library:read',
+  PlaybackRead = 'playback:read',
+}
+
+export type TrustLevel = 'official' | 'verified' | 'community';
+
+export const PERMISSION_RISK: Record<Permission, 'low' | 'medium' | 'high'> = {
+  [Permission.NetworkOutbound]: 'high',
+  [Permission.NetworkListen]: 'high',
+  [Permission.StorageRead]: 'medium',
+  [Permission.StorageWrite]: 'high',
+  [Permission.StorageDownloads]: 'high',
+  [Permission.DatabaseRead]: 'medium',
+  [Permission.DatabaseReadWrite]: 'medium',
+  [Permission.SettingsRead]: 'low',
+  [Permission.SettingsReadWrite]: 'medium',
+  [Permission.UiSettingsTab]: 'low',
+  [Permission.UiPage]: 'low',
+  [Permission.UiDashboardWidget]: 'low',
+  [Permission.SchedulerRegister]: 'low',
+  [Permission.NotificationsSend]: 'medium',
+  [Permission.RequestsReadWrite]: 'medium',
+  [Permission.LibraryRead]: 'low',
+  [Permission.PlaybackRead]: 'low',
+};
+
+export const COMMUNITY_PLUGIN_DISCLAIMER =
+  'This plugin is provided by a third-party developer and is not affiliated with, endorsed by, or supported by OmniLux. ' +
+  'By installing this plugin, you acknowledge that OmniLux bears no responsibility for its functionality, security, ' +
+  'or any consequences of its use. The plugin author is solely responsible for the plugin and its compliance with applicable laws.';
+
+export interface PluginAuthor {
+  name: string;
+  email?: string;
+  url?: string;
 }
 
 export type AdapterKind =
@@ -87,6 +123,26 @@ export interface PluginBackgroundJobManifest {
   description?: string;
 }
 
+export interface PluginPageManifest {
+  id: string;
+  path: string;
+  entry: string;
+  navItem?: {
+    label: string;
+    icon: string;
+    position?: 'primary' | 'secondary';
+  };
+}
+
+export interface PluginSettingsTabManifest {
+  id: string;
+  label: string;
+  icon: string;
+  description: string;
+  entry: string;
+  section?: 'core' | 'plugins';
+}
+
 export interface PluginManifest {
   name: string;
   version: string;
@@ -94,8 +150,12 @@ export interface PluginManifest {
   description: string;
   category: PluginCategory;
   icon?: string;
-  author?: string;
+  author?: string | PluginAuthor;
   license?: string;
+  trust?: TrustLevel;
+  disclaimer?: string;
+  signature?: string;
+  defaultEnabled?: boolean;
   compatibility: PluginCompatibility;
   dependencies?: PluginDependency[];
   permissions: Permission[];
@@ -103,6 +163,8 @@ export interface PluginManifest {
   adapters?: PluginAdapterManifest[];
   routes?: PluginRouteManifest[];
   settingsUI?: PluginSettingsUiManifest;
+  pages?: PluginPageManifest[];
+  settingsTabs?: PluginSettingsTabManifest[];
   migrations?: PluginMigrationManifest[];
   backgroundJobs?: PluginBackgroundJobManifest[];
 }
@@ -115,6 +177,7 @@ export interface PluginMeta {
   version: string;
   enabled: boolean;
   source: PluginSource;
+  trust: TrustLevel;
   manifest: PluginManifest;
   permissions: Permission[];
   installedAt: string;

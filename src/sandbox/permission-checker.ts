@@ -89,6 +89,18 @@ export class PermissionChecker {
     this.assert(Permission.NotificationsSend, operation);
   }
 
+  assertRequestsAccess(operation = 'access media requests'): void {
+    this.assert(Permission.RequestsReadWrite, operation);
+  }
+
+  assertLibraryRead(operation = 'read from the media library'): void {
+    this.assert(Permission.LibraryRead, operation);
+  }
+
+  assertPlaybackRead(operation = 'read playback activity'): void {
+    this.assert(Permission.PlaybackRead, operation);
+  }
+
   guard<T>(permission: Permission, operation: string, fn: () => T): T {
     this.assert(permission, operation);
     return fn();

@@ -1,4 +1,6 @@
-import { Permission, type PluginManifest } from '../types.js';
+import { Permission, type PluginManifest, type TrustLevel } from '../types.js';
+
+const VALID_TRUST_LEVELS: TrustLevel[] = ['official', 'verified', 'community'];
 
 export const PLUGIN_MANIFEST_FILENAME = 'omnilux-plugin.json';
 
@@ -114,9 +116,69 @@ export function validatePluginManifest(input: unknown): ManifestValidationResult
     }
   }
 
+  if (manifest.defaultEnabled !== undefined && typeof manifest.defaultEnabled !== 'boolean') {
+    errors.push({
+      code: 'invalid-type',
+      path: 'defaultEnabled',
+      message: 'defaultEnabled must be a boolean when provided.',
+      value: manifest.defaultEnabled,
+    });
+  }
+
   validateOptionalString(manifest, 'icon', errors);
-  validateOptionalString(manifest, 'author', errors);
   validateOptionalString(manifest, 'license', errors);
+
+  if (manifest.author !== undefined) {
+    if (typeof manifest.author === 'string') {
+      // string form is fine
+    } else if (isRecord(manifest.author)) {
+      if (typeof manifest.author.name !== 'string' || manifest.author.name.trim().length === 0) {
+        errors.push({
+          code: 'missing-field',
+          path: 'author.name',
+          message: 'author.name is required when author is an object.',
+          value: manifest.author.name,
+        });
+      }
+    } else {
+      errors.push({
+        code: 'invalid-type',
+        path: 'author',
+        message: 'author must be a string or an object with a name field.',
+        value: manifest.author,
+      });
+    }
+  }
+
+  if (manifest.trust !== undefined) {
+    if (typeof manifest.trust !== 'string' || !VALID_TRUST_LEVELS.includes(manifest.trust as TrustLevel)) {
+      errors.push({
+        code: 'invalid-value',
+        path: 'trust',
+        message: `trust must be one of: ${VALID_TRUST_LEVELS.join(', ')}.`,
+        value: manifest.trust,
+      });
+    }
+  }
+
+  if (manifest.disclaimer !== undefined && typeof manifest.disclaimer !== 'string') {
+    errors.push({
+      code: 'invalid-type',
+      path: 'disclaimer',
+      message: 'disclaimer must be a string when provided.',
+      value: manifest.disclaimer,
+    });
+  }
+
+  if (manifest.signature !== undefined && typeof manifest.signature !== 'string') {
+    errors.push({
+      code: 'invalid-type',
+      path: 'signature',
+      message: 'signature must be a string when provided.',
+      value: manifest.signature,
+    });
+  }
+
   validateOptionalManifestArrays(manifest, errors);
 
   if (errors.length > 0) {
@@ -157,7 +219,7 @@ function validateRequiredString(
 
 function validateOptionalString(
   value: Partial<PluginManifest>,
-  key: keyof Pick<PluginManifest, 'icon' | 'author' | 'license'>,
+  key: keyof Pick<PluginManifest, 'icon' | 'license'>,
   errors: ManifestValidationError[]
 ): void {
   const field = value[key];

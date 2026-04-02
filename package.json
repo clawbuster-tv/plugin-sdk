@@ -1,29 +1,51 @@
 {
   "name": "@omnilux/plugin-sdk",
   "version": "0.1.0",
+  "description": "TypeScript SDK for building OmniLux plugins.",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "lint": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "tsc -p tsconfig.json"
+    },
+    "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/omnilux/plugin-sdk"
+    "url": "git+https://github.com/omnilux-tv/plugin-sdk.git"
   },
-  "license": "MIT",
+  "homepage": "https://github.com/omnilux-tv/plugin-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/omnilux-tv/plugin-sdk/issues"
+  },
+  "keywords": [
+    "omnilux",
+    "plugin",
+    "sdk",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.32.1",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "prepack": "pnpm run build"
+  },
   "devDependencies": {
     "typescript": "^5.8.2"
   }

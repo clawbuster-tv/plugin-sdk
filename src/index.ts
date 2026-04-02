@@ -69,7 +69,22 @@ export type {
   PluginDownloadReconciliationReport,
   PluginDownloadReconciliationStateChange,
   PluginJobRegistration,
+  PluginLibraryApi,
+  PluginNotificationOptions,
+  PluginNotifications,
+  PluginPlaybackApi,
+  PluginRequestsApi,
   PluginSettingsPanelRegistration,
+  LibraryFileRecord,
+  PlaybackActivityRecord,
+  PlaybackDateFilter,
+  PlaybackDailyItem,
+  PlaybackDeviceItem,
+  PlaybackGenreItem,
+  PlaybackHeatmapCell,
+  PlaybackTopMediaItem,
+  PlaybackUserStats,
+  RequestRecord,
 } from './context/plugin-context.js';
 export type {
   PluginDatabase,
@@ -89,6 +104,9 @@ export type {
   ManifestValidationErrorCode,
   ManifestValidationResult,
 } from './loader/manifest-validator.js';
+
+export { PLATFORM_EVENTS } from './platform-events.js';
+export type { PlatformEventName } from './platform-events.js';
 
 export {
   PermissionChecker,
